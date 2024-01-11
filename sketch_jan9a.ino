@@ -19,14 +19,15 @@ int n = 0; // default action index
 
 // Anfangspositionen definieren (müssen evtl. angepasst werden)
 const int DeckelBeginPos = 90; // '100°' Deckel geschlossen
-const int FingerBeginPos = 2;  //Grad müssen evtl. angepasst werden
+const int FingerBeginPos = 60;  // Grad müssen evtl. angepasst werden
 // Endpositionen definieren
 const int DeckelEndPos = 10; // '0°' --> Deckel voll geöffnet
-const int FingerEndPos = 2;  //Grad müssen evtl. angepasst werden
+const int FingerEndPos = 4;  //Grad müssen evtl. angepasst werden
 
 
 //int pos = 0;
 //int action = 0;
+
 
 
 // Initialisierung einiger Funktionen
@@ -39,12 +40,16 @@ void setup() {
   myservo_finger.attach(Pin_finger); //myservo_finger für den Finger
 
   // Zur Ersteinrichtung
-  //myservo_deckel.write(0); einkommentieren und Heleb einstellen
+  //myservo_deckel.write(0); //einkommentieren und Hebel einstellen --> Position, wenn Deckel voll geöffnet
+  //myservo_finger.write(0); //einkommentieren und Finger einstellen --> Position, wenn Schalter betätigt + X° Reserve
+  //myservo_finger.write(FingerEndPos); // Einstellen der Endposition
 
   // Servos in Ausgangsstellung fahren
   myservo_deckel.write(DeckelBeginPos);
   myservo_finger.write(FingerBeginPos);
-
+  delay(2000);
+  myservo_deckel.detach();
+  myservo_finger.detach(); 
 }
 
 
@@ -63,14 +68,19 @@ void loop() {
 
 // Actions
 void action() {
-  n = random(2);  // random n: n entspricht Anzahl der vordefinierten cases + 1!
-  //n = 1; // zum debuggen case vorgeben (muss später auskommentiert werden!)
-  delay(500);
+  //n = random(2);  // random n: n entspricht Anzahl der vordefinierten cases + 1!
+  n = 0; // zum debuggen case vorgeben (muss später auskommentiert werden!)
+  delay(1000);
   switch(n) {
-    case 0:
+    case 0: // normaler Zyklus
+      delay(1000);
       openDeckel();
+      delay(1000);
+      openFinger();
+      closeFinger();
       delay(500);
       closeDeckel();
+      delay(500);
       break;
     case 1:
       openDeckelSlow();
@@ -78,6 +88,7 @@ void action() {
       closeDeckelSlow();
       break;
     case 2:
+      fakeDeckel();
       break;
     default:
       break;
@@ -92,6 +103,12 @@ void action() {
 void openDeckel() {
   myservo_deckel.attach(Pin_deckel);
   myservo_deckel.write(DeckelEndPos);
+  delay(500);
+}
+
+void openFinger() {
+  myservo_finger.attach(Pin_finger);
+  myservo_finger.write(FingerEndPos);
   delay(1000);
 }
 
@@ -103,10 +120,25 @@ void openDeckelSlow() {
   }
 }
 
+void fakeDeckel() {
+  for(int i = 0; i < 3; i++) {
+    myservo_deckel.attach(Pin_deckel);
+    myservo_deckel.write((DeckelBeginPos+DeckelEndPos)/2);
+    delay(1000);
+    closeDeckel();
+  }
+}
+
 void closeDeckel() {
   myservo_deckel.write(DeckelBeginPos);
-  delay(1000);
+  delay(2000);
   myservo_deckel.detach();
+}
+
+void closeFinger() {
+  myservo_finger.write(FingerBeginPos);
+  delay(1000);
+  myservo_finger.detach();
 }
 
 void closeDeckelSlow() {
@@ -116,4 +148,3 @@ void closeDeckelSlow() {
   }
   myservo_deckel.detach();
 }
-
