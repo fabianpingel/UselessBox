@@ -18,11 +18,11 @@ int n = 0; // default action index
 
 
 // Anfangspositionen definieren (müssen evtl. angepasst werden)
-const int DeckelBeginPos = 90; // '100°' Deckel geschlossen
-const int FingerBeginPos = 55;  // Grad müssen evtl. angepasst werden, max 60!!!
+const int DeckelBeginPos = 105; // '100°' Deckel geschlossen
+const int FingerBeginPos = 78;  // Grad müssen evtl. angepasst werden, max 60!!!
 // Endpositionen definieren
 const int DeckelEndPos = 40; // '0°' --> Deckel voll geöffnet
-const int FingerEndPos = 5;  //Grad müssen evtl. angepasst werden
+const int FingerEndPos = 28;  //Grad müssen evtl. angepasst werden
 
 
 //int pos = 0;
@@ -44,8 +44,8 @@ void setup() {
   //myservo_deckel.write(0); //einkommentieren und Hebel einstellen --> Position, wenn Deckel voll geöffnet
   //myservo_finger.write(0); //einkommentieren und Finger einstellen --> Position, wenn Schalter betätigt + X° Reserve
   // Einstellen der Anfangsposition
-  // myservo_finger.write(FingerBeginPos); // Einstellen der Anfangsposition
-  // myservo_deckel.write(DeckelBeginPos); // Einstellen der Anfangsposition
+  //myservo_finger.write(FingerBeginPos); // Einstellen der Anfangsposition
+  //myservo_deckel.write(DeckelBeginPos); // Einstellen der Anfangsposition
 
   // Einstellen der Endposition  
   //myservo_finger.write(FingerEndPos); // Einstellen der Endposition
@@ -223,4 +223,3 @@ void closeDeckelSlow() {
   }
   myservo_deckel.detach();
 }
-
